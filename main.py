@@ -15,10 +15,12 @@ from PIL import Image
 
 st.title('Road condition Classifier')
 
+current_path = os.getcwd()
+
 def save_uploaded_file(uploaded_file):
     
     try:
-        with open(os.path.join('static/images',uploaded_file.name),'wb') as f:
+        with open(os.path.join(current_path, 'static/images',uploaded_file.name),'wb') as f:
             f.write(uploaded_file.getbuffer())
         return 1    
     except Exception as e:
@@ -44,9 +46,9 @@ if __name__ == "__main__":
 
             st.image(display_image)
 
-            prediction, prob = predictor(os.path.join('static/images',uploaded_file.name))
+            prediction, prob = predictor(os.path.join(current_path, 'static/images',uploaded_file.name))
 
-            os.remove('static/images/'+uploaded_file.name)
+            os.remove(current_path+'/static/images/'+uploaded_file.name)
 
             # deleting uploaded saved picture after prediction
 
