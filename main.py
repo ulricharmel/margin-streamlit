@@ -21,7 +21,8 @@ def save_uploaded_file(uploaded_file):
         with open(os.path.join('static/images',uploaded_file.name),'wb') as f:
             f.write(uploaded_file.getbuffer())
         return 1    
-    except:
+    except Exception as e:
+        st.write(f"{e.message}")        
         return 0
 
 uploaded_file = st.file_uploader("Upload Image")
