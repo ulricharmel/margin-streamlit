@@ -39,8 +39,27 @@ def predictor(imagepath, threshold=0.5):
     
     prob = int(100.*np.abs(threshold-out)/threshold)
     
-    
-
     return prediction, prob
+
+def pred_gradio(imagepath):
+
+    threshold = 0.5
+
+    image = Image.open(imagepath).convert("RGB")
+
+    image = torch.reshape(eval_transformer(image), (1,3,64,64))
+
+    out = model(image).detach().cpu().numpy()
+
+    if out>threshold:
+        prediction = "bad conditions ahead"
+        prob = out + 0
+    else:
+        prediction = "good conditions ahead"
+        prob = 1 - out
+
+    return {prediction: prob}
+
+
 
 
