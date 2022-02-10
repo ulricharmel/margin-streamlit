@@ -22,7 +22,7 @@ def save_uploaded_file(uploaded_file):
             f.write(uploaded_file.getbuffer())
         return 1    
     except Exception as e:
-        st.write(f"{e.message}")        
+        st.write(f"{e}")        
         return 0
 
 uploaded_file = st.file_uploader("Upload Image")
