@@ -6,6 +6,7 @@ import streamlit as st
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
+import tempfile
 
 sns.set_theme(style="darkgrid")
 
@@ -27,39 +28,55 @@ def save_uploaded_file(uploaded_file):
         st.write(f"{e}")        
         return 0
 
-uploaded_file = st.file_uploader("Upload Image")
 
-# text over upload button "Upload Image"
-
-st.write("## Task")
-
-if __name__ == "__main__":
-    st.write(f"{uploaded_file}")
+def main():
+    uploaded_file = st.file_uploader("Upload Image")
     if uploaded_file is not None:
+        tfile = tempfile.NamedTemporaryFile(delete=True)
+        tfile.write(uploaded_file.read())
+        st.sidebar.write('Please wait for the magic to happen! This may take up to a minute.')
+        
+        display_image = Image.open(tfile)
+        
+        st.image(display_image)
 
-        if save_uploaded_file(uploaded_file): 
-            st.write("## Does it get here")
+        prediction, prob = predictor(tfile)
 
-            # display the image
+        st.text(f'Model predicts {prediction} with a {prob}% confidence!')
 
-            display_image = Image.open(uploaded_file)
 
-            st.image(display_image)
+    # # text over upload button "Upload Image"
 
-            prediction, prob = predictor(os.path.join(current_path, 'static/images',uploaded_file.name))
+    # st.write("## Task")
 
-            os.remove(current_path+'/static/images/'+uploaded_file.name)
+    # st.write(f"{uploaded_file}")
+    # if uploaded_file is not None:
 
-            # deleting uploaded saved picture after prediction
+    #     if save_uploaded_file(uploaded_file): 
+    #         st.write("## Does it get here")
 
-            # drawing graphs
+    #         # display the image
 
-            st.text(f'Model predicts {prediction} with a {prob}% confidence!')
+    #         display_image = Image.open(uploaded_file)
 
-            # fig, ax = plt.subplots()
+    #         st.image(display_image)
 
-            # ax  = sns.barplot(y = 'name',x='values', data = prediction,order = prediction.sort_values('values',ascending=False).name)
+    #         prediction, prob = predictor(os.path.join(current_path, 'static/images',uploaded_file.name))
 
-            # ax.set(xlabel='Confidence %', ylabel='Breed')
+    #         os.remove(current_path+'/static/images/'+uploaded_file.name)
 
-            # st.pyplot(fig)
+    #         # deleting uploaded saved picture after prediction
+
+    #         # drawing graphs
+
+    #         st.text(f'Model predicts {prediction} with a {prob}% confidence!')
+
+    #         # fig, ax = plt.subplots()
+
+    #         # ax  = sns.barplot(y = 'name',x='values', data = prediction,order = prediction.sort_values('values',ascending=False).name)
+
+    #         # ax.set(xlabel='Confidence %', ylabel='Breed')
+
+    #         # st.pyplot(fig)
+
+main()
