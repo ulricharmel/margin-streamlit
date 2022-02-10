@@ -32,10 +32,10 @@ st.write("## Task")
 
 if __name__ == "__main__":
     st.write(f"{uploaded_file}")
-    st.write("## Task")
     if uploaded_file is not None:
 
         if save_uploaded_file(uploaded_file): 
+            st.write("## Does it get here")
 
             # display the image
 
