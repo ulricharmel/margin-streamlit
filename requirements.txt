@@ -10,3 +10,4 @@ matplotlib
 psutil
 line-profiler
 opencv-python
+seaborn
